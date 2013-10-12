@@ -1,0 +1,19 @@
+# Config file sample for wxtserve
+
+# Following settings are mandatory
+
+# Where to listen for requests
+listenhost=127.0.0.1
+listenport=8000
+
+# Where serial to ethernet gateway resides
+wxthost=10.0.0.100
+wxtport=7000
+
+
+
+# Following settings are optional
+
+# Settings for ham.fi output
+#prefix=WXT_
+#locator=KP20

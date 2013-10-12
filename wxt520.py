@@ -151,12 +151,14 @@ class parser:
                 row=row[:-3]
 
             parseerror=False
+            modified=False
             pieces=row.split(',')
             for p in pieces[1:]:
                 try:
                     k,v=p.split('=')
                     if k in measurementlookup:
                         m=measurementlookup[k].parse(k,v)
+                        modified=True
                         if m==None:
                             if k in self.measurements:
                                 del self.measurements[k]
@@ -171,17 +173,4 @@ class parser:
             if parseerror:
                 self.stats.error_parse()
 
-
-
-f=open("input.txt","rt")
-p=parser()
-
-for r in f.readlines():
-    p.feed(r)
-
-for m in p.measurements:
-    print "%s %s"%(m,p.measurements[m])
-
-print p.stats
-
-f.close()
+            return modified
