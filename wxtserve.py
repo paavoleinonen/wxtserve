@@ -8,6 +8,7 @@
 # (at your option) any later version.
 
 import wxt520
+import sys
 import hamfi
 import socket
 import threading
@@ -32,12 +33,12 @@ class config:
                 self.params[pieces[0]]=pieces[1]
         f.close()
         
-    def getint(self,name,default):
+    def getint(self,name,default=None):
         if name in self.params:
             return int(self.params[name])
         return default
 
-    def get(self,name,default):
+    def get(self,name,default=None):
         if name in self.params:
             return self.params[name]
         return default
@@ -66,7 +67,7 @@ class wxt_thread(threading.Thread):
         while True:
             try:
                 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		hostport=(localconfig.get('wxthost',''), localconfig.getint('wxtport',7000))
+		hostport=(localconfig.get('wxthost'), localconfig.getint('wxtport',7000))
 		print("Connecting to %s:%d"%hostport)
                 s.connect(hostport)
                 print("Connected.")
@@ -108,10 +109,13 @@ class listen_thread(threading.Thread):
 
 
 def main():
-    try:
-        localconfig.loadfile("conf.txt")
-    except:
-        pass
+    for e in sys.argv[1:]:
+        try:
+            localconfig.loadfile(e)
+            print("Loaded config %s"%(e))
+        except:
+            print("Loading of config %s failed"%(e))
+            return
 
     l=listen_thread()
     l.daemon=True

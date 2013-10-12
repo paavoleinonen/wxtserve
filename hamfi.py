@@ -7,6 +7,8 @@
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 
+# Definition of data format is awailable at: http://oh2mp.ham.fi/anturispeksi.html
+
 import time
 
 def hamfigenerator(data,prefix="",locator=""):
