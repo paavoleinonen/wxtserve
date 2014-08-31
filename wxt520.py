@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2011, 2013 Paavo Leinonen <paavo.leinonen@iki.fi>
+# Copyright (C) 2011, 2013, 2014 Paavo Leinonen <paavo.leinonen@iki.fi>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ measurementlookup={
 
     'Vh':measurementparser('Heating voltage',unit_V),
     'Vs':measurementparser('Supply voltage',unit_V),
-    'Vr':measurementparser('3.3 V reference voltage',unit_V),
+    'Vr':measurementparser('3.5 V reference voltage',unit_V),
 
     'Id':measurementparser('Information')
     }
