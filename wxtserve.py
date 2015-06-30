@@ -47,7 +47,7 @@ localconfig=config()
 
 datamessage=""
 
-class wxt_thread(threading.Thread):
+class wxt_ethernet(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
@@ -81,8 +81,30 @@ class wxt_thread(threading.Thread):
                 continue
             self.handle(s)
             s.close()
-            
 
+            
+class wxt_serial(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def handle(self,conn):
+	global datamessage
+	prefix=localconfig.get('prefix','')
+	locator=localconfig.get('locator','')
+
+        w=wxt520.parser()
+        while True:
+            msg=conn.read(4096)
+            if len(msg)>0:
+                if w.feed(msg):
+                    datamessage=hamfi.hamfigenerator(w.measurements,prefix,locator)
+
+    def run(self):
+        import serial
+        s=serial.Serial(localconfig.get('wxtport'),baudrate=localconfig.getint('wxtspeed',9600),timeout=1)
+        print("Opened serial %s"%(localconfig.get('wxtport')))
+        self.handle(s)
+        s.close()
 
 
 class listen_thread(threading.Thread):
@@ -118,17 +140,23 @@ def main():
             print("Loading of config %s failed"%(e))
             return
 
+    if localconfig.get('wxttype')=='serial':
+        w=wxt_serial()
+    elif localconfig.get('wxttype')=='ethernet':
+        w=wxt_ethernet()
+    else:
+        print("Unknown wxttype %s"%(localconfig.get('wxttype','')))
+        return
+
     l=listen_thread()
+
     l.daemon=True
-    w=wxt_thread()
     w.daemon=True
 
     l.start()
     w.start()
 
-    while True:
-        time.sleep(10)
-    
+    w.join()
     
 
 if __name__=='__main__':

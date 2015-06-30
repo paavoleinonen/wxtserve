@@ -6,10 +6,18 @@
 listenhost=127.0.0.1
 listenport=8000
 
+
+# Use only one of following connection types:
+
 # Where serial to ethernet gateway resides
+wxttype=ethernet
 wxthost=10.0.0.100
 wxtport=7000
 
+# Direct serial port connection
+wxttype=serial
+wxtport=/dev/ttyS0
+wxtspeed=9600
 
 
 # Following settings are optional
