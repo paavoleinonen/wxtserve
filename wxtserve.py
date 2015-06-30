@@ -94,6 +94,7 @@ class listen_thread(threading.Thread):
 
         # open listening socket
         s_listen=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s_listen.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	hostport=(localconfig.get('listenhost',''), localconfig.getint('listenport',8000))
         s_listen.bind(hostport)
         s_listen.listen(10)
